@@ -1,16 +1,13 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:message_app/firebase_options.dart';
+import 'package:message_app/screens/login.dart';
+import 'package:message_app/theme/theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const Home());
-  FirebaseFirestore.instance
-      .collection('colecao')
-      .doc('documento')
-      .set({'texto': 'test'});
 }
 
 class Home extends StatefulWidget {
@@ -23,6 +20,11 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return MaterialApp(
+      title: 'Message App',
+      debugShowCheckedModeBanner: false,
+      theme: appTheme(),
+      home: const LoginScreen(),
+    );
   }
 }
