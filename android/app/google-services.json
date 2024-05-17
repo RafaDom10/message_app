@@ -7,49 +7,20 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1056884950665:android:b4334b55941858ff70e858",
-        "android_client_info": {
-          "package_name": "com.domdevelopment"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "1056884950665-ssifrpca9vtothr08r74ecjjkd96lp8l.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.domdevelopment",
-            "certificate_hash": "79b7456aa1969fbbb9d02cca60a4173545d7b60e"
-          }
-        },
-        {
-          "client_id": "1056884950665-uc14b6fd6a3vn9u1uuq20o7u38g9p35f.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDcggLvV55f9cASsiry7_muzT71ZjmbkIQ"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "1056884950665-uc14b6fd6a3vn9u1uuq20o7u38g9p35f.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
         "mobilesdk_app_id": "1:1056884950665:android:0bf882858f0db63170e858",
         "android_client_info": {
           "package_name": "com.domdevelopment.message_app"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "1056884950665-aeng7npkledrka9u8lncrmc3vsl24rph.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.domdevelopment.message_app",
+            "certificate_hash": "79b7456aa1969fbbb9d02cca60a4173545d7b60e"
+          }
+        },
         {
           "client_id": "1056884950665-uc14b6fd6a3vn9u1uuq20o7u38g9p35f.apps.googleusercontent.com",
           "client_type": 3
