@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:message_app/services/google_sign_in.dart';
+import 'package:message_app/widgets/message_composer.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -11,7 +12,7 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  void sendMessage(String message) {
+  void sendMessage({String? message}) {
     Map<String, dynamic> data = {
       'uuid': user?.uid,
       'displayName': user?.displayName,
@@ -52,6 +53,9 @@ class _ChatScreenState extends State<ChatScreen> {
             color: Colors.white,
           ),
         ],
+      ),
+      body: Column(
+        children: [MessageComposer(sendMessage)],
       ),
     );
   }
