@@ -1,8 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:message_app/screens/chat_screen.dart';
+import 'package:message_app/services/google_sign_in.dart';
 
-Widget signInButton() {
+Widget signInButton(BuildContext context) {
+  void onPressed() {
+    signInWithGoogle().then((value) => {
+          if (value != null)
+            {
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const ChatScreen()))
+            }
+        });
+  }
+
   return OutlinedButton(
-    onPressed: () => {},
+    onPressed: onPressed,
     style: OutlinedButton.styleFrom(
         elevation: 0,
         foregroundColor: Colors.grey,
