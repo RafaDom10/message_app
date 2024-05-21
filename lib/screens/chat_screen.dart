@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:message_app/services/google_sign_in.dart';
+import 'package:message_app/widgets/chat_message.dart';
 import 'package:message_app/widgets/message_composer.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -15,6 +16,8 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+  bool _loading = false;
+
   void sendMessage({String? message, File? image}) async {
     Map<String, dynamic> data = {
       'uuid': user?.uid,
@@ -29,6 +32,11 @@ class _ChatScreenState extends State<ChatScreen> {
           .ref()
           .child(user!.uid + DateTime.now().microsecondsSinceEpoch.toString())
           .putFile(image);
+
+      setState(() {
+        _loading = true;
+      });
+
       final TaskSnapshot downloadURL = (await task);
       final String url = await downloadURL.ref.getDownloadURL();
 
@@ -69,7 +77,37 @@ class _ChatScreenState extends State<ChatScreen> {
         ],
       ),
       body: Column(
-        children: [MessageComposer(sendMessage)],
+        children: [
+          Expanded(
+              child: StreamBuilder<QuerySnapshot>(
+            stream: FirebaseFirestore.instance
+                .collection('messages')
+                .orderBy('time')
+                .snapshots(),
+            builder: (context, snapshot) {
+              switch (snapshot.connectionState) {
+                case ConnectionState.waiting:
+                case ConnectionState.none:
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                default:
+                  List<DocumentSnapshot> documents =
+                      snapshot.data!.docs.reversed.toList();
+                  return ListView.builder(
+                      reverse: true,
+                      itemBuilder: (context, index) {
+                        return ChatMessage(
+                            data: documents[index].data(),
+                            self: documents[index].data()['uid'] == user?.uid);
+                      },
+                      itemCount: documents.length);
+              }
+            },
+          )),
+          _loading ? const LinearProgressIndicator() : Container(),
+          MessageComposer(sendMessage)
+        ],
       ),
     );
   }
