@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class MessageComposer extends StatefulWidget {
-  final Function({String message}) sendMessage;
+  final Function({String message, File image}) sendMessage;
   const MessageComposer(this.sendMessage, {super.key});
 
   @override
@@ -11,6 +14,33 @@ class MessageComposer extends StatefulWidget {
 class _MessageComposerState extends State<MessageComposer> {
   bool isTextFill = false;
   final TextEditingController _controller = TextEditingController();
+  XFile? _img;
+
+  Future<void> _imgFromCamera() async {
+    final ImagePicker picker = ImagePicker();
+    XFile? image =
+        await picker.pickImage(source: ImageSource.camera, imageQuality: 50);
+    setState(() {
+      _img = image;
+      sendImage();
+    });
+  }
+
+  Future<void> _imgFromGallery() async {
+    final ImagePicker picker = ImagePicker();
+    XFile? image =
+        await picker.pickImage(source: ImageSource.gallery, imageQuality: 50);
+    setState(() {
+      _img = image;
+      sendImage();
+    });
+  }
+
+  void sendImage() {
+    if (_img == null) return;
+    widget.sendMessage(image: File(_img!.path));
+    _img = null;
+  }
 
   void _resetFields() {
     _controller.clear();
@@ -30,12 +60,12 @@ class _MessageComposerState extends State<MessageComposer> {
                 ListTile(
                   leading: const Icon(Icons.photo_library),
                   title: const Text('Galeria'),
-                  onTap: () => {},
+                  onTap: () => {_imgFromGallery(), Navigator.of(context).pop()},
                 ),
                 ListTile(
                   leading: const Icon(Icons.photo_camera_rounded),
                   title: const Text('Câmera'),
-                  onTap: () => {},
+                  onTap: () => {_imgFromCamera(), Navigator.of(context).pop()},
                 ),
                 ListTile(
                   leading: const Icon(Icons.clear, color: Colors.red),

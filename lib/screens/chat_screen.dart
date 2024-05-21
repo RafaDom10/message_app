@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:message_app/services/google_sign_in.dart';
 import 'package:message_app/widgets/message_composer.dart';
@@ -12,7 +15,7 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  void sendMessage({String? message}) {
+  void sendMessage({String? message, File? image}) async {
     Map<String, dynamic> data = {
       'uuid': user?.uid,
       'displayName': user?.displayName,
@@ -20,6 +23,17 @@ class _ChatScreenState extends State<ChatScreen> {
       'time': Timestamp.now()
     };
     data['message'] = message;
+
+    if (image != null) {
+      UploadTask task = FirebaseStorage.instance
+          .ref()
+          .child(user!.uid + DateTime.now().microsecondsSinceEpoch.toString())
+          .putFile(image);
+      final TaskSnapshot downloadURL = (await task);
+      final String url = await downloadURL.ref.getDownloadURL();
+
+      data['photoURL'] = url;
+    }
 
     FirebaseFirestore.instance.collection('messages').add(data);
   }
