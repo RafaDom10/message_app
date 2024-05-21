@@ -19,6 +19,38 @@ class _MessageComposerState extends State<MessageComposer> {
     });
   }
 
+  void _showPicker(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext buildContext) {
+          return SafeArea(
+              child: Container(
+            child: Wrap(
+              children: [
+                ListTile(
+                  leading: const Icon(Icons.photo_library),
+                  title: const Text('Galeria'),
+                  onTap: () => {},
+                ),
+                ListTile(
+                  leading: const Icon(Icons.photo_camera_rounded),
+                  title: const Text('Câmera'),
+                  onTap: () => {},
+                ),
+                ListTile(
+                  leading: const Icon(Icons.clear, color: Colors.red),
+                  title: const Text(
+                    'Cancelar',
+                    style: TextStyle(color: Colors.red),
+                  ),
+                  onTap: () => {Navigator.of(context).pop()},
+                )
+              ],
+            ),
+          ));
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -26,7 +58,7 @@ class _MessageComposerState extends State<MessageComposer> {
       child: Row(
         children: [
           IconButton(
-              onPressed: () => {},
+              onPressed: () => {_showPicker(context)},
               icon: const Icon(Icons.photo_camera_rounded)),
           Expanded(
               child: TextField(
